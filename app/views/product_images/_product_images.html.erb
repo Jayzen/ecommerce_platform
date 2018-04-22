@@ -1,0 +1,80 @@
+<div class="col-md-10">
+  <div class="card">
+    <div class="card-header text-secondary text-center">
+      商品图片列表
+    </div>
+    <div class="card-body">
+      <% unless @product.errors.blank? %>
+        <div class="alert alert-danger">
+          <ul class="list-unstyled">
+            <% @product.errors.messages.values.flatten.each do |error| %>
+              <li><i class="fa fa-exclamation-circle"></i> <%= error %></li>
+            <% end -%>
+          </ul>
+        </div>
+      <% end -%> 
+      <table class="table table-sm table-hover table-striped">
+        <thead>
+          <tr class="text-secondary">
+            <th>ID</th>
+            <th>图片</th>
+            <th>权重</th>
+            <th class="text-right">
+              <%= form_tag product_product_images_path(product_id: @product), method: :post, enctype: "multipart/form-data" do %>
+                <%= file_field_tag "images[]", multiple: true, hidden: true, id: "product_images" %>
+                <div class="d-flex justify-content-end">
+                  <div id="upload_file" class="text-secondary">
+                  </div>
+                  <div>
+                    <a href="#", class="btn btn-sm text-secondary", id="button_trigger" >
+                      <i class="fa fa-upload fa-fw"></i>点击图片上传
+                    </a>
+                  </div>
+                  <div>
+                    <%= submit_tag "上传", class: "btn btn-primary btn-sm" %>
+                  </div>
+                </div>
+              <% end -%>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @product_images.each do |product_image| %>
+            <tr class="text-secondary">
+              <td><%= product_image.id %></td>
+              <td><%= image_tag product_image.image.large.url %></td>
+              <td>
+                <%= form_tag product_product_image_path(@product, product_image), method: :put do %>
+                  <input type="text" value="<%= product_image.weight %>" name="weight" />
+                  <%= submit_tag "更新", class: "btn btn-primary btn-sm" %>
+                <% end -%>
+              </td>
+              <td align="right">
+                <%= link_to "删除", product_product_image_path(@product, product_image), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn-outline-secondary btn-sm" %>
+              </td>
+            </tr>
+          <% end -%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<%= content_for :javascripts do %>
+  <script>
+    $(document).ready(function(){
+      var fileSelect = document.getElementById("button_trigger"),
+          fileElem = document.getElementById("product_images");
+      fileSelect.addEventListener("click", function (e) {
+        if (fileElem) {
+          fileElem.click();
+        }
+        e.preventDefault(); // prevent navigation to "#"
+      }, false);
+      
+      $("#product_images").change(function(){
+        $("#upload_file").text($("#product_images").val());
+      })
+    });
+  </script>
+<% end %>
+

@@ -1,0 +1,75 @@
+<div class="pull-right">
+  <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#address_form_modal">添加地址</button>
+</div>
+<div class="clearfix"></div>
+<br>
+<ul class="list-group">
+  <% unless @addresses.blank? %>
+    <% @addresses.each_with_index do |address, index| %>
+      <li class="list-group-item">
+        <label>
+          <input type="radio" name="address_id" value="<%= address.id %>" <%= 'checked' if current_user.default_address == address %> />
+          <%= address.contact_name %>
+          <%= address.address %>
+          <%= address.cellphone %>
+          
+          <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#edit_address_form">编辑</button>
+
+          <%= link_to "编辑", edit_address_path(address), class: "inline edit-address-btn" %>
+          <%= link_to "删除", address_path(address), method: 'delete', remote: true, "data-confirm": "确认删除该地址吗", class: "inline" %>
+          <% if current_user.default_address == address %>
+            <span class="default_address">默认地址</span>
+          <% else %>
+            <%= link_to "设为默认收货地址", set_default_address_address_path(address), method: 'put', remote: true, class: "inline" %>
+          <% end -%>
+        </label>
+      </li> 
+    
+    
+     <div class="modal fade" id="edit_address_form" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+      </div>
+      
+      <div class="modal-body">
+        <%= form_for address, url: address_path(address), remote: true, method: :put do |f|  %>
+          <div id="edit_address_errors">
+          </div>
+          <div class="form-group">
+            <label class="control-label">详细地址:*</label>
+            <%= f.text_area :address, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <label class="control-label">姓名:*</label>
+            <%= f.text_field :contact_name, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <label class="control-label">手机号码:*</label>
+            <%= f.text_field :cellphone, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <label class="control-label">邮政编码:</label>
+            <%= f.text_field :zipcode, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <input type="checkbox" name="address[set_as_default]" <%= 'checked' if current_user.default_address == address %> value="1" /> 设为默认地址
+          </div>
+      </div>
+      <div class="modal-footer">
+        <%= f.submit "保存", class: "btn btn-primary" %>
+      </div>
+      <% end -%>
+    </div>
+  </div>
+</div> 
+    
+    
+    <% end -%>
+  <% else %>
+    <li class="list-group-item">
+      请添加送货地址
+    </li>
+  <% end %>
+</ul>

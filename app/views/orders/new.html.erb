@@ -1,0 +1,101 @@
+<div class="row">
+  <div class="container">
+    <div class="page-header">
+      <h4><i class="fa fa-map-marker"></i> 收货地址</h4>
+    </div>
+    <div id="address_list">
+      <%= render 'addresses' %>
+    </div>
+
+    <div class="page-header">
+      <h4><i class="fa fa-credit-card"></i> 支付方式</h4>
+    </div>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <input type="radio" name="payment_method" value="alipay" checked />
+        <%= image_tag "alipay.png", width: 100 %>
+      </li>
+    </ul>
+
+    <div class="page-header">
+      <h4><i class="fa fa-list-alt"></i> 商品列表</h4>
+    </div>
+    <% @shopping_carts.each do |shopping_cart| %>
+      <div class="media shopping-cart-row">
+        <div class="media-left">
+          <%= image_tag shopping_cart.product.main_product_image.image.large.url, size: "20x20", class: 'media-object', alt: shopping_cart.product.title %>
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading"><%= shopping_cart.product.title %></h4>
+          数量: <%= shopping_cart.amount %> 价格: ¥<%= shopping_cart.amount * shopping_cart.product.price %>
+        </div>
+      </div>
+    <% end -%>
+
+    <br />
+    <div class="pull-right">
+      <%= form_tag orders_path, method: :post, class: "create-order-form" do %>
+        <input type="hidden" name="address_id" />
+        <strong>总价: ¥<%= @shopping_carts.sum { |cart| cart.amount * cart.product.price } %></strong>
+        <input type="submit" value="确认订单" class="btn btn-danger btn-lg" />
+      <% end %>
+    </div>
+</div>
+
+
+
+<div class="modal fade" tabindex="-1" id="address_form_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">收货地址</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <%= form_for @address, url: (@address.new_record? ? addresses_path : address_path(@address)), remote: true, method: (@address.new_record? ? :post : :put) do |f|  %>
+        <div class="modal-body">
+          <div id="new_address_errors">
+          </div>
+          <div class="form-group">
+            <label class="control-label">详细地址:*</label>
+            <%= f.text_area :address, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <label class="control-label">姓名:*</label>
+            <%= f.text_field :contact_name, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <label class="control-label">手机号码:*</label>
+            <%= f.text_field :cellphone, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <label class="control-label">邮政编码:</label>
+            <%= f.text_field :zipcode, class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <input type="checkbox" name="address[set_as_default]" <%= 'checked' if current_user.default_address == @address %> value="1" /> 设为默认地址
+          </div>
+        </div>
+        <div class="modal-footer">
+          <%= f.submit "保存", class: "btn btn-primary" %>
+        </div>
+      <% end -%>
+    </div>
+  </div>
+</div>
+
+<%= content_for :javascripts do %>
+  <script>
+      $('.create-order-form').submit(function() {
+        var addressID = $('input[name="address_id"]:checked').val(),
+          $form = $(this);
+
+        if (!addressID) {
+          alert("请选择收货地址!");
+          return false;
+        } else {
+          $form.find('input[name="address_id"]').val(addressID);
+          return true;
+        }
+      }) 
+  </script>
+<% end %>

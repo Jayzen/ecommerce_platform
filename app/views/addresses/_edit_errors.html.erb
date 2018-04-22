@@ -1,0 +1,7 @@
+<div class="alert alert-danger">
+  <ul class="list-unstyled">
+    <% @address.errors.messages.values.flatten.each do |error| %>
+      <li><i class="fa fa-exclamation-circle"></i> <%= error %></li>
+    <% end -%>
+   </ul>
+</div>

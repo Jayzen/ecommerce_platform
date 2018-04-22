@@ -1,0 +1,41 @@
+<div class="col-md-10">
+  <div class="card">
+    <div class="card-header text-secondary text-center">
+      商品列表
+    </div>
+    <div class="card-body">
+      <table class="table table-sm table-hover table-striped">
+        <thead>
+          <tr class="text-secondary">
+            <th>ID</th>
+            <th>名称</th>
+            <th>UUID/SKU</th>
+            <th>MSRP</th>
+            <th>Price</th>
+            <th>库存</th>
+            <th>状态</th>
+            <th class="text-right"><%= link_to "新建商品", new_product_path, class: "btn btn-primary btn-sm" %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @products.each do |product| %>
+          <tr class="text-secondary">
+            <td><%= product.id %></td>
+            <td><%= product.title %></td>
+            <td><%= product.uuid %></td>
+            <td><%= product.msrp %></td>
+            <td><%= product.price %></td>
+            <td><%= product.amount %></td>
+            <td><%= product.status %></td>
+            <td class="text-right">
+              <%= link_to "编辑", edit_product_path(product), class: "btn btn-secondary btn-sm" %>
+              <%= link_to "删除", product_path(product), method: :delete, 'data-confirm': "确认删除商品吗?", class: "btn btn-secondary btn-sm" %>
+              <%= link_to "图片管理", product_product_images_path(product_id: product), class: "btn btn-secondary btn-sm" %>
+            </td>
+          </tr>
+          <% end -%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

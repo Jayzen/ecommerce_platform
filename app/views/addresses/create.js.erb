@@ -1,0 +1,6 @@
+<% if @address.errors.blank? %>
+  $("#address_form_modal").modal('hide');
+  $("#address_list").html('<%= escape_javascript(render('orders/addresses')) %>');
+<% else %>
+  $("#new_address_errors").html('<%= escape_javascript(render('addresses/new_errors')) %>');
+<% end %>

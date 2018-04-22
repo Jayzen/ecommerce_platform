@@ -1,0 +1,110 @@
+<div class="row">
+  <div class="col-lg-3">
+    <%= render 'welcomes/categories' %>
+  </div>
+  <div class="col-lg-9">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+          <li class="breadcrumb-item"><a href="<%= root_path %>">Home</a></li>
+          <li class="breadcrumb-item active"><%= @product.category.parent.name %></li>
+          <li class="breadcrumb-item"><a href="<%= category_path @product.category %>"><%= @product.category.name %></a></li>
+          <li class="breadcrumb-item active"><%= @product.title %></li>
+        </ol>
+      </nav>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="d-flex flex-column">
+          <div class="card box-shadow mb-4 "><%= image_tag @product.main_product_image.image.large.url, class: "card-img-top" %></div>
+          <div class="d-flex flex-row align-items-center">
+            <% @product.product_images.limit(7).each do |product_image| %>
+              <div class="mr-1">
+                <%= image_tag product_image.image.large.url, width: "49" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column col-md-6" style="background-color: #FCFCFC;">
+        <div class="text-center mb-4 mt-1">
+          <h4><%= @product.title %></h4>
+        </div>
+        <div class="d-flex flex-row justify-content-between mb-4" style="background-color: #FAEBD7;">
+          <div class="d-flex flex-column">
+            <div><h5>原价: <span class="msrp">¥<%= @product.msrp %></span></h5></div>
+            <div><h3><strong>现价: <span class="text-danger">¥<%= @product.price %></span></strong></h3></div>
+          </div>
+          <div>two</div>
+        </div>
+        
+        <div class="d-flex flex-row justify-content-center">
+          <div>
+            <p>数量: <input type="text" name="amount" value="1" /></p>
+          </div>
+          <div>
+            <p>库存: <%= @product.amount %></p>
+          </div>
+        </div>
+
+        <div class="d-flex flex-row justify-content-center">
+          <div>
+            <%= link_to "立即购买", "#", class: "btn btn-warning mr-1" %>
+          </div>
+          <div>
+            <%= show_add_to_cart @product %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <br />
+    <br />
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a href="javascript:;">商品描述</a></li>
+    </ul>
+    <br />
+    <div>
+      <%= @product.description.html_safe %>
+    </div>
+  </div>
+</div>
+
+<%= content_for :javascripts do %>
+  <script>
+    $('.add-to-cart-btn').on('click', function() {
+      var $this = $(this),
+        $amount = $('input[name="amount"]'),
+        $prog = $this.find('i');
+
+      if ($amount.length > 0 && parseInt($amount.val()) <= 0) {
+        alert("购买数量至少为 1");
+        return false;
+      }
+
+      $.ajax({
+        url: $this.attr('href'),
+        method: 'post',
+        data: { product_id: $this.data('product-id'), amount: $amount.val() },
+        beforeSend: function() {
+          if (!$prog.hasClass('fa-spin')) {
+            $prog.addClass('fa-spin');
+          }
+          $prog.show();
+        },
+        success: function(data) {
+          if ($('#shopping_cart_modal').length > 0) {
+            $('#shopping_cart_modal').remove();
+          }
+
+          $('body').append(data);
+          $('#shopping_cart_modal').modal();
+        },
+        complete: function() {
+          $prog.hide();
+        }
+      })
+
+      return false;
+    })
+  </script>
+<% end %>
