@@ -4,7 +4,10 @@ class Address < ApplicationRecord
   validates :contact_name, presence: { message: "收货人不能为空" }
   validates :cellphone, presence: { message: "手机号不能为空" }
   validates :address, presence: { message: "地址不能为空" }
- 
+  validates :cellphone, numericality: { only_integer: true, message: "手机号码必须为数字" }, 
+    unless: Proc.new { |address| address.cellphone.blank? }
+  validates :cellphone, length: { is: 11, message: "手机号码为11位" },
+    unless: Proc.new { |address| address.cellphone.blank? }
   belongs_to :user
 
   attr_accessor :set_as_default

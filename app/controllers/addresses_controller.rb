@@ -49,12 +49,12 @@ class AddressesController < ApplicationController
   end
 
   private
-  def address_params
-    params.require(:address).permit(:contact_name, :cellphone, :address,
-      :zipcode, :set_as_default)
-  end
+    def address_params
+     params.require(:address).permit(:contact_name, :cellphone, :address,
+        :zipcode, :set_as_default)
+    end
 
-  def find_address
-    @address = current_user.addresses.find(params[:id])
-  end
+    def find_address
+      @address = current_user.addresses.find(params[:id])
+    end
 end

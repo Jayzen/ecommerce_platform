@@ -4,7 +4,7 @@
   </div>
   <div class="col-lg-9">
       <nav aria-label="breadcrumb">
-        <ol class="breadcrumb bg-white">
+        <ol class="breadcrumb bg-light">
           <li class="breadcrumb-item"><a href="<%= root_path %>">Home</a></li>
           <li class="breadcrumb-item active"><%= @product.category.parent.name %></li>
           <li class="breadcrumb-item"><a href="<%= category_path @product.category %>"><%= @product.category.name %></a></li>

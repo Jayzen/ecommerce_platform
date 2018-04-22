@@ -10,21 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_17_034301) do
+ActiveRecord::Schema.define(version: 2018_04_22_095006) do
 
-  create_table "addresses", force: :cascade do |t|
+  create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id"
     t.string "address_type"
     t.string "contact_name"
-    t.string "cellphone"
-    t.string "address"
-    t.string "zipcode"
+    t.integer "cellphone"
+    t.text "address"
+    t.integer "zipcode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id", "address_type"], name: "index_addresses_on_user_id_and_address_type"
   end
 
-  create_table "categories", force: :cascade do |t|
+  create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "ancestry"
     t.integer "weight", default: 0
@@ -34,19 +34,19 @@ ActiveRecord::Schema.define(version: 2018_03_17_034301) do
     t.index ["name"], name: "index_categories_on_name"
   end
 
-  create_table "friendly_id_slugs", force: :cascade do |t|
+  create_table "friendly_id_slugs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
     t.string "sluggable_type", limit: 50
     t.string "scope"
     t.datetime "created_at"
-    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
-    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true, length: { slug: 70, scope: 70 }
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", length: { slug: 140 }
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
-  create_table "orders", force: :cascade do |t|
+  create_table "orders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id"
     t.integer "product_id"
     t.integer "address_id"
@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 2018_03_17_034301) do
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
-  create_table "product_images", force: :cascade do |t|
+  create_table "product_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "product_id"
     t.integer "weight", default: 0
     t.string "image"
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 2018_03_17_034301) do
     t.index ["product_id"], name: "index_product_images_on_product_id"
   end
 
-  create_table "products", force: :cascade do |t|
+  create_table "products", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "category_id"
     t.string "title"
     t.string "status", default: "off"
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 2018_03_17_034301) do
     t.index ["uuid"], name: "index_products_on_uuid", unique: true
   end
 
-  create_table "shopping_carts", force: :cascade do |t|
+  create_table "shopping_carts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id"
     t.string "user_uuid"
     t.integer "product_id"
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 2018_03_17_034301) do
     t.index ["user_uuid"], name: "index_shopping_carts_on_user_uuid"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
     t.string "name"

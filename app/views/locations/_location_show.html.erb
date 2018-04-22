@@ -1,0 +1,24 @@
+<div class="col-md-10">
+    <div class="card">
+      <div class="card-header text-secondary text-center">
+        <%= @location.contact_name %>
+      </div>
+      <div class="card-body">
+        <div class="form-group mb-0">
+          <label class="col-sm-12 col-form-label text-secondary">姓名: <%= @location.contact_name %></label>
+        </div>
+        <div class="form-group mb-0">
+          <label class="col-sm-12 col-form-label text-secondary">手机号码: <%= @location.cellphone %></label>
+        </div>
+        <div class="form-group mb-0">
+          <label class="col-sm-12 col-form-label text-secondary">邮政编码: <%= @location.zipcode %></label>
+        </div>
+        <div class="form-group mb-0">
+          <label class="col-sm-12 col-form-label text-secondary">详细地址: <%= @location.address %></label>
+        </div>
+        <div class="form-group mb-0">
+          <label class="col-sm-12 col-form-label"><%= link_to "地址列表", locations_path, class: "btn btn-primary btn-sm" %></label>
+        </div>
+      </div>
+    </div>
+</div>

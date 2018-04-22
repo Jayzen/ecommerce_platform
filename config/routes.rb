@@ -21,9 +21,10 @@ Rails.application.routes.draw do
   resources :shopping_carts
   resources :orders
   resources :payments, only: [:index]
+  resources :locations do
+    put :set_default_address, on: :member
+  end
   resources :addresses do
-    member do
-      put :set_default_address
-    end
+    put :set_default_address, on: :member
   end 
 end

@@ -7,7 +7,7 @@
           <div class="media shopping-cart-row">
             <div class="media-left">
                <a href="<%= product_path(shopping_cart.product) %>">
-                <%= image_tag shopping_cart.product.main_product_image.image.large.url, class: 'media-object', alt: shopping_cart.product.title %>
+                <%= image_tag shopping_cart.product.main_product_image.image.large.url, height: "60", class: 'media-object', alt: shopping_cart.product.title %>
               </a> 
             </div>
             <div class="media-body">

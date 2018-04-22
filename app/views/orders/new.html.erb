@@ -13,7 +13,7 @@
     <ul class="list-group">
       <li class="list-group-item">
         <input type="radio" name="payment_method" value="alipay" checked />
-        <%= image_tag "alipay.png", width: 100 %>
+        <img src="https://test.zhengjiajun.com/uploads/product_image/image/3/large_alipay.png", width="100"/>
       </li>
     </ul>
 
@@ -23,7 +23,7 @@
     <% @shopping_carts.each do |shopping_cart| %>
       <div class="media shopping-cart-row">
         <div class="media-left">
-          <%= image_tag shopping_cart.product.main_product_image.image.large.url, size: "20x20", class: 'media-object', alt: shopping_cart.product.title %>
+          <%= image_tag shopping_cart.product.main_product_image.image.large.url, height: "60", class: 'media-object', alt: shopping_cart.product.title %>
         </div>
         <div class="media-body">
           <h4 class="media-heading"><%= shopping_cart.product.title %></h4>
