@@ -2,9 +2,6 @@ class LocationsController < ApplicationController
   before_action :logged_in_user
   before_action :find_location, only: [:edit, :update, :show, :destroy, :set_default_address]
 
-  def show
-  end
-
   def edit
     render action: :new
   end
@@ -12,14 +9,14 @@ class LocationsController < ApplicationController
   def update
     if @location.update(location_params)
       flash[:success] = "地址更新成功"
-      redirect_to location_path(@location)
+      redirect_to locations_path
     else
-      render 'edit'
+      render 'new'
     end
   end
 
   def index
-    @locations = current_user.addresses
+    @locations = current_user.addresses.order("created_at asc")
   end
 
   def new

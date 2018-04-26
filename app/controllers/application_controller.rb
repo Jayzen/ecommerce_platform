@@ -1,14 +1,9 @@
 class ApplicationController < ActionController::Base
   include ApplicationHelper
 
-  before_action :set_locale
   before_action :set_browser_uuid
 
   protected
-    def set_locale
-      I18n.locale = params[:locale] || I18n.default_locale 
-    end
-
     def fetch_home_data
       @categories = Category.grouped_data
       @shopping_cart_count = ShoppingCart.by_user_uuid(session[:user_uuid]).count

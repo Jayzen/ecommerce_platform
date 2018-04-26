@@ -7,22 +7,20 @@
       <table class="table table-sm table-hover table-striped">
         <thead>
           <tr class="text-secondary">
-            <th>ID</th>
-            <th class="text-left">姓名</th>
-            <th class="text-center">详细地址</th>
+            <th class="text-left">用户名</th>
+            <th class="text-middle">详细地址</th>
             <th class="text-right"><%= link_to "新建收货地址", new_location_path, class: "btn btn-primary btn-sm" %></th>
           </tr>
         </thead>
         <tbody>
          <% @locations.each do |location| %>
            <tr class="text-secondary">
-             <td><%= location.id %></td>
              <td class="text-left"><%= location.contact_name%>&nbsp&nbsp<span class="badge badge-primary"><%= current_user.default_address == location ? "默认地址" : ""%></span></td>
-             <td class="text-center"><%= location.cellphone %>|<%= location.address %></td>
+             <td class="text-middle"><%= location.cellphone %>|<%= location.address %><%= location.zipcode? ? "|#{location.zipcode}" : "" %></td>
              <td class="text-right">
-               <%= link_to "编辑", edit_location_path(location), class: "btn btn-secondary btn-sm" %> 
-               <%= link_to "删除", location_path(location), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn-secondary btn-sm" %>
-               <%= link_to "设为默认地址", set_default_address_location_path(location), method: 'put', class: "btn btn-secondary btn-sm" %>
+               <%= link_to "编辑", edit_location_path(location), class: "text-secondary" %> 
+               <%= link_to "删除", location_path(location), method: :delete, 'data-confirm': "确认删除吗?", class: "text-secondary" %>
+               <%= link_to "设为默认地址", set_default_address_location_path(location), method: 'put', class: "text-secondary" %>
              </td>
            </tr>
          <% end -%>

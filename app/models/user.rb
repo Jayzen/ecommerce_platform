@@ -1,5 +1,6 @@
 class User < ApplicationRecord
-  attr_accessor :remember_token, :activation_token, :reset_token, :old_password, 
+  attr_accessor :password, :password_confirmation, :old_password,
+                :remember_token, :activation_token, :reset_token, 
                 :crop_x, :crop_y, :crop_w, :crop_h
 
   mount_uploader :avatar, AvatarUploader
@@ -9,11 +10,20 @@ class User < ApplicationRecord
   before_create :create_activation_digest
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :name, presence: true, length: { maximum: 50 }
-  validates :email, presence: true, length: { maximum: 255}, uniqueness: { case_sensitive: false }
-  validates :email, format: { with: VALID_EMAIL_REGEX }, unless: proc{ |user| user.email.blank? }
-  validates :password, length: { minimum: 6 }, allow_nil: true
-    
+  validates :name, presence: { message: "用户名不能为空" }, 
+    length: { maximum: 50, message: "用户名不能超过50个字符" }
+  validates :email, presence: { message: "邮箱名不能为空" }, 
+    length: { maximum: 255, message: "邮箱名不能超过255个字符"}, 
+    uniqueness: { case_sensitive: false, message: "邮箱名必须唯一" }
+  validates :email, format: { with: VALID_EMAIL_REGEX, message: "邮箱名格式不正确" }, 
+    unless: proc{ |user| user.email.blank? }
+  validates :password, presence: { message: "密码不能为空" }, 
+    length: { minimum: 6, message: "密码长度不能少于6位" },
+    confirmation: { message: "密码和密码确认不一致" },
+    allow_blank: true
+  validates :avatar, presence: "头像提交不能为空",
+    allow_blank: true
+
   has_secure_password
 
   has_many :addresses, -> { where(address_type: Address::AddressType::User).order("id desc") }

@@ -42,9 +42,9 @@
       <div class="text-center">
         <% if @user.avatar.to_s.size == 0 %>
           <% if @user.gender == "male" %>
-            <%= image_tag "male.jpeg", size: "100x100" %>
+            <img src="https://test.zhengjiajun.com/uploads/product_image/image/2/large_avatar.png" width="100"/>
           <% else %>
-            <%= image_tag "female.jpg", size: "100x100" %>
+            <img src="https://test.zhengjiajun.com/uploads/product_image/image/1/large_female.jpg" width="100"/>
           <% end %>
         <% else %>
           <%= image_tag @user.avatar.large.url, size: "100x100" %>
