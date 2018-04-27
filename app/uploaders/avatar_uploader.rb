@@ -30,6 +30,10 @@ class AvatarUploader < CarrierWave::Uploader::Base
     end
   end
 
+  def size_range
+    0..10.megabyte
+  end
+
   def extension_whitelist
     %w(jpg jpeg gif png)
   end

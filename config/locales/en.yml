@@ -33,3 +33,4 @@ en:
   errors:
     messages:
       extension_whitelist_error: "格式不正确"
+      max_size_error: "文件不能大于%{max_size}"
